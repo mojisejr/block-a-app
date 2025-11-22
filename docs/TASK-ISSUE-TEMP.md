@@ -50,12 +50,11 @@
 - **Integration Points**: [where this connects to existing code]
 
 ### 🏗️ TECHNICAL REQUIREMENTS
-- **Framework**: [FRAMEWORK] (project-specific)
-- **Language**: [LANGUAGE] (e.g., TypeScript, Rust, Python)
-- **Database**: [DATABASE] (e.g., PostgreSQL, MySQL)
-- **UI Library**: [UI_LIBRARY] (optional)
-- **Authentication**: [AUTH_METHOD] (e.g., OAuth, JWT)
-- **Testing**: [TEST_TOOLING] (e.g., Jest, pytest)
+- **Framework**: Next.js 14+ (App Router)
+- **Language**: TypeScript
+- **UI Library**: Shadcn UI (Tailwind CSS)
+- **State Management**: React Hooks / Context
+- **Testing**: Jest / React Testing Library
 
 ### 📁 FILES TO CREATE (EXACT LIST)
 ```
@@ -72,16 +71,10 @@ lib/[exact-path]/[service].ts
 - **Accessibility compliance** where relevant
 - **Mobile-first responsive design** when applicable
 
-### 💾 DATABASE OPERATIONS (IF APPLICABLE)
-```sql
--- EXACT SQL to execute (if any)
-CREATE TABLE IF NOT EXISTS [table_name] (
-  -- exact column definitions
-);
-
--- EXACT RLS policies (if any)
-ALTER POLICY ...;
-```
+### 💾 DATA PERSISTENCE (IF APPLICABLE)
+- **Local Storage**: [Key names and data structure]
+- **URL Parameters**: [Query params to handle]
+- **No Database**: This project is stateless (Client-side only)
 
 ### 🎨 UI/UX REQUIREMENTS
 - **Design System**: Follow existing shadcn/ui patterns exactly
@@ -218,9 +211,9 @@ ALTER POLICY ...;
 
 ## 🚀 Atomic Task Examples
 
-### Example 1: Database Table Creation
+### Example 1: React Component Creation
 ```markdown
-## [TASK-009-1] Atomic: Create Members Database Table
+## [TASK-001-1] Atomic: Create Distance Selector Component
 
 ### 🤖 EXECUTION MODE: COPILOT (MANDATORY)
 **Current Mode: COPILOT**
@@ -228,95 +221,51 @@ ALTER POLICY ...;
 
 ### 🎯 SINGLE OBJECTIVE (MANDATORY)
 **Complete this one specific deliverable end-to-end:**
-- Create `members` table in Supabase with exact schema and RLS policies
+- Create `DistanceSelector` component using Shadcn UI Card and Buttons
 
 ### 📦 DELIVERABLE (MANDATORY)
 **This task creates ONE complete deliverable:**
-- **File(s) Created**: `lib/supabase/schema/members.sql`
-- **Functionality Added**: Database table for LINE OA member registration
-- **Integration Points**: Connects to existing Supabase client configuration
+- **File(s) Created**: `components/step-distance.tsx`
+- **Functionality Added**: UI for selecting race distance (5K, 10K, 21K, 42K)
+- **Integration Points**: Used in `page.tsx` main flow
 
 ### 🤖 COPILOT IMPLEMENTATION INSTRUCTIONS
 **GitHub Copilot must:**
-1. Create feature branch from staging: `feature/task-009-1-members-database-table`
-2. Create SQL schema file with exact table structure
-3. Implement Row Level Security policies
-4. Create TypeScript type definitions
-5. Validate: `npm run build`, `npm run lint`, `npm test` (100% PASS)
-6. Create pull request with proper documentation
+1. Create feature branch from main: `feature/task-001-1-distance-selector`
+2. Implement component with Shadcn `Card` and `Button`
+3. Define props interface for `onSelect` callback
+4. Validate: `npm run build`, `npm run lint` (100% PASS)
+5. Create pull request
 
 ### 🏗️ TECHNICAL REQUIREMENTS
-- **Framework**: [FRAMEWORK] (project-specific)
-- **Language**: [LANGUAGE] (e.g., TypeScript, Rust, Python)
-- **Database**: [DATABASE] (e.g., PostgreSQL, MySQL)
-- **UI Library**: [UI_LIBRARY] (optional)
-- **Authentication**: [AUTH_METHOD] (e.g., OAuth, JWT)
-- **Testing**: [TEST_TOOLING] (e.g., Jest, pytest)
+- **Framework**: Next.js 14+
+- **Language**: TypeScript
+- **UI Library**: Shadcn UI
+- **Styling**: Tailwind CSS
 
 ### 📁 FILES TO CREATE (EXACT LIST)
 ```
-lib/[db]/schema/members.sql
-lib/[db]/types/members.[ext]
-```
-
-### 💾 DATABASE OPERATIONS (MANDATORY)
-```sql
--- File: lib/supabase/schema/members.sql
-CREATE TABLE IF NOT EXISTS members (
-  id SERIAL PRIMARY KEY,
-  line_user_id VARCHAR(255) UNIQUE NOT NULL,
-  display_name VARCHAR(255) NOT NULL,
-  registration_date TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-  contact_info TEXT,
-  is_active BOOLEAN DEFAULT true,
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-);
-
--- Enable Row Level Security
-ALTER TABLE members ENABLE ROW LEVEL SECURITY;
-
--- RLS Policy: Users can only see their own data
-CREATE POLICY "Users can view own profile"
-  ON members
-  FOR SELECT
-  USING (line_user_id = auth.jwt() ->> 'line_user_id');
-
--- RLS Policy: Users can only insert their own data
-CREATE POLICY "Users can insert own profile"
-  ON members
-  FOR INSERT
-  WITH CHECK (line_user_id = auth.jwt() ->> 'line_user_id');
-
--- RLS Policy: Users can only update their own data
-CREATE POLICY "Users can update own profile"
-  ON members
-  FOR UPDATE
-  USING (line_user_id = auth.jwt() ->> 'line_user_id');
+components/step-distance.tsx
 ```
 
 ### 🔧 EXACT IMPLEMENTATION REQUIREMENTS
 - **No modifications to existing files**
-- **Complete TypeScript interfaces** for Member type
-- **Comprehensive error handling** in database operations
-- **Row Level Security** properly configured
-- **Timestamps** for created_at and updated_at
+- **Complete TypeScript interfaces**
+- **Responsive Design**: Mobile-first (w-full on small screens)
+- **Interactive**: Hover states and active states for buttons
 
 ### ✅ ACCEPTANCE CRITERIA (100% MANDATORY)
-- [ ] `npm run build` passes with **ZERO** errors or warnings
+- [ ] `npm run build` passes with **ZERO** errors
 - [ ] `npm run lint` passes with **ZERO** violations
-- [ ] `npx tsc --noEmit` passes (TypeScript compilation)
-- [ ] All tests pass (`npm test`) with **ZERO** failures
-- [ ] SQL script executes successfully in Supabase
-- [ ] TypeScript types compile without errors
-- [ ] No unintended side effects
+- [ ] Component renders correctly in LINE LIFF simulator
+- [ ] Clicking button triggers callback with correct distance value
 
 ### 🔗 RELATED CONTEXT (NO DEPENDENCIES)
-- **Context Issue**: #[ISSUE-008] (for reference only)
-- **No Task Dependencies**: This task must be executable independently
+- **Context Issue**: #[ISSUE-001]
+- **No Task Dependencies**: Independent component
 
 **Assign to: @copilot**
-**Labels**: `atomic`, `database`, `schema`, `independent-execution`, `copilot`
+**Labels**: `atomic`, `ui`, `component`, `independent-execution`, `copilot`
 ```
 
 ### Example 2: React Component Creation (Manual Mode)

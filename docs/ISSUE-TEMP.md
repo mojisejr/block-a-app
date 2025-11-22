@@ -52,20 +52,19 @@
 
 ### 🏗️ TECHNICAL ARCHITECTURE
 **System Components:**
-- **Frontend Components**: [components/pages ที่จะ implement]
-- **Backend Services**: [APIs/services ที่จะ implement]
-- **Database Models**: [tables/models ที่จะ implement]
-- **External Integrations**: [services ที่ต้อง connect]
+- **Frontend Components**: [components/pages to implement]
+- **State Management**: [client-side state logic]
+- **Data Persistence**: [Local Storage / URL Params]
+- **External Integrations**: [LINE LIFF SDK, etc.]
 
 **Architecture Patterns:**
-- [Pattern 1 - design pattern ที่จะใช้]
-- [Pattern 2 - technical approach ที่เลือก]
+- **Client-Side Logic**: All calculations happen in browser
+- **Stateless**: No backend database dependency
 
 **Key Technical Requirements:**
-- **Performance**: [ความเร็ว/ขนาด/response time]
-- **Security**: [ความปลอดภัยที่ต้องการ]
-- **Scalability**: [การรองรับผู้ใช้งาน]
-- **Compatibility**: [browser/device support]
+- **Performance**: Fast load time (< 1.5s LCP)
+- **Responsiveness**: Mobile-first design (Shadcn UI)
+- **Compatibility**: LINE In-App Browser (iOS/Android)
 
 ### 🎯 IMPLEMENTATION DIRECTIONS
 **Breaking Down Strategy:**

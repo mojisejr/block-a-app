@@ -1,8 +1,8 @@
 ## Project Overview
 
-**Project Name**: [PROJECT_NAME] (Workflow Template)
+**Project Name**: Smart Race Pacer (LINE LIFF Edition)
 
-**Repository**: [REPOSITORY_URL]
+**Repository**: https://github.com/mojisejr/block-a-app
 **Author**: [AUTHOR_NAME] <[EMAIL]>
 
 **Description**: Generic, reusable agent workflow and implementation template. Use this repository to document mandatory agent safety rules, workflow commands, templates, and the implementation checklist used by automated agents and developers. Replace placeholders with project-specific metadata when adapting this template.
@@ -26,10 +26,10 @@
 - ✅ **ALWAYS** sync main branch before any implementation: `git checkout main && git pull origin main`
 - ✅ **ALWAYS** verify task issue exists: `#[issue-number]` before `=impl`
 - ✅ **ALWAYS** use feature branch naming: `feature/task-[issue-number]-[description]`
-- ✅ **ALWAYS** ensure 100% build success before commit: `cargo build --release`
-- ✅ **ALWAYS** ensure 100% clippy pass before commit: `cargo clippy --all-targets --all-features`
+- ✅ **ALWAYS** ensure 100% build success before commit: `npm run build`
+- ✅ **ALWAYS** ensure 100% lint pass before commit: `npm run lint`
 - ✅ **ALWAYS** use template-guided workflow with proper context validation
-- ✅ **ALWAYS** verify code formatting: `cargo fmt -- --check`
+- ✅ **ALWAYS** verify code formatting: `npm run format` (if available) or Prettier
 
 ---
 
@@ -73,7 +73,7 @@
 - **If user asks in Thai** → Respond in Thai (ยกเว้น technical terms)
 - **If user asks in English** → Respond in English
 - **Mixed language** → Follow the primary language of the question
-- **Technical terms** → Always use English (Rust, Cargo, PostgreSQL, etc.)
+- **Technical terms** → Always use English (Next.js, React, TypeScript, Shadcn, etc.)
 
 ### Examples
 
@@ -84,7 +84,7 @@
 **Agent (English)**: "After analyzing the queue system in `src/queue/`, I found..."
 
 **User (Mixed)**: "explain ว่า database connection pool ทำงานยังไง"
-**Agent (Thai)**: "Connection pool ใน database ทำงานแบบ... (code examples use English)"
+**Agent (Thai)**: "Component `StepDistance` ใน `components/` ทำงานแบบ... (code examples use English)"
 
 ---
 
@@ -433,71 +433,49 @@ All slash commands follow this structure:
 
 ### Core Stack
 
-- **Language**: [PRIMARY_LANGUAGE] (e.g., Rust, TypeScript, Python)
-- **Web Framework**: [WEB_FRAMEWORK] (project-dependent)
-- **Database**: [DATABASE] (e.g., PostgreSQL, MySQL, SQLite)
-- **Cache/Queue**: [CACHE_QUEUE] (e.g., Redis)
-- **Authentication**: [AUTH_METHOD] (e.g., OAuth/JWT)
-- **AI Engine**: [AI_ENGINE] (optional)
-- **Payments**: [PAYMENT_PROVIDER] (optional)
-- **Deployment**: [DEPLOYMENT_PLATFORM]
-- **Frontend**: [FRONTEND_TECH] (optional)
+- **Language**: TypeScript
+- **Web Framework**: Next.js 14+ (App Router)
+- **UI Library**: Shadcn UI (Tailwind CSS)
+- **State Management**: React Hooks / Context
+- **Database**: None (Stateless / Local Storage)
+- **Deployment**: Vercel
+- **Platform**: LINE LIFF
 
 ### Project Structure
 
 ```
-[project-name]/
-├── README.md                   # Project overview and quick start
-├── docs/                       # Workflow and templates (issue/task templates)
-├── src/                        # Source code (language-dependent)
-│   ├── main.*                  # Server or application entry point
-│   ├── config.*                # Configuration management
-│   ├── handlers/               # Request handlers / API endpoints
-│   ├── services/               # Business logic and integrations
-│   ├── models/                 # Data structures and types
-   └── db/                     # Database helpers and migrations
-├── migrations/                 # Database migrations (if applicable)
-└── .env.example                # Environment variables template
-```
-
-### Database Schema (example)
-
-```
-# Sample core tables (adapt to project needs)
-users (id, external_id, name, email, avatar, created_at)
-events (id, user_id, type, payload, created_at)
-payments (id, user_id, provider_id, amount, status, created_at)
+app/
+├── layout.tsx       # Root layout & Fonts
+├── page.tsx         # Main Logic Container
+└── components/
+    ├── step-distance.tsx
+    ├── step-input.tsx
+    ├── step-result.tsx
+    └── ui/          # Shadcn components
+utils/
+    └── calculator.ts # Core logic
 ```
 
 ### Key Features
 
-- **Tarot Readings**: Question submission → AI processing (1 combined agent) → Result storage
-- **Credit System**: Stars (paid currency) + Coins (earned currency), exchangeable 100:1
-- **User Authentication**: LINE LIFF OAuth with JWT tokens
-- **Payment Processing**: Stripe integration with webhook handling
-- **Referral System**: Generate referral codes, earn coins per signup
-- **AI Engine**: Single optimized GPT-4o Mini call (combines analysis + interpretation)
-- **Queue System**: Upstash Redis for async reading processing
-- **Real-time Status**: Check reading processing status via polling or WebSocket
+- **Race Plan Calculation**: Negative Split algorithm
+- **Story Mode**: Narrative result generation
+- **Stateless**: No database required
+- **Responsive**: Mobile-first for LINE LIFF
 
 ### Development Commands
 
 ```bash
-cargo run              # Development server (default: http://localhost:8080)
-cargo build --release  # Production build (creates optimized binary)
-cargo test             # Run all tests
-cargo clippy           # Lint checks
-cargo fmt              # Code formatting
+npm run dev            # Development server
+npm run build          # Production build
+npm run lint           # Lint checks
 ```
 
 ### Performance Metrics
 
-- **API Response Time**: Target < 200ms (p95)
-- **Reading Generation**: 1-2 seconds (single optimized AI call)
-- **Concurrent Connections**: 5,000+ (Actix-web capable)
-- **Memory Usage**: ~3-5MB per request (Rust efficiency)
-- **Startup Time**: ~10ms
-- **Monthly Cost**: ~$50-75 (Render + Supabase + Upstash)
+- **LCP**: < 1.5s (Mobile)
+- **Calculation Time**: < 100ms (Client-side)
+- **Bundle Size**: Optimized for 3G networks
 
 ---
 
@@ -505,41 +483,17 @@ cargo fmt              # Code formatting
 
 ### Code Quality Requirements
 
-- **Rust**: Edition 2021, strict type system (eliminates entire classes of bugs)
-- **Cargo Check**: Zero compiler warnings (enforced)
-- **Clippy Lints**: Zero warnings (`cargo clippy`)
-- **Formatting**: `cargo fmt` auto-formatting, consistent across project
-- **Build**: 100% success rate before commit
-- **Tests**: Unit tests for critical paths (payments, auth)
-- **Async Safety**: No panics, proper error handling in all async contexts
-
-### API Quality Standards
-
-- **Response Times**: p95 < 200ms for all endpoints
-- **Error Handling**: Always return structured JSON errors with status codes
-- **Rate Limiting**: Enforce per-user limits via Redis
-- **Input Validation**: Validate all user inputs before processing
-- **JWT Security**: 7-day token expiration, secure secret management
-- **HTTPS Only**: Enforce in production, automatic via Render
-
-### Performance Standards
-
-- **Startup Time**: API ready within 10ms
-- **Database Queries**: < 50ms per query (with indexes)
-- **Redis Operations**: < 10ms per operation
-- **AI Processing**: 1-2 seconds per reading (queue-based async)
-- **Concurrent Users**: Handle 100+ concurrent connections
-- **Memory Usage**: < 10MB base memory + ~1MB per concurrent request
+- **TypeScript**: Strict mode enabled
+- **ESLint**: Zero warnings
+- **Prettier**: Consistent formatting
+- **Build**: 100% success rate
+- **Responsiveness**: Verified on Mobile view (320px+)
 
 ### Security Standards
 
-- **Secrets Management**: Use .env, never commit sensitive data
-- **Database Access**: All queries use parameterized statements (SQLx)
-- **Authentication**: JWT tokens with proper expiration
-- **CORS**: Configured for frontend domain only
-- **Rate Limiting**: Per-user limits on sensitive endpoints
-- **Webhook Verification**: Verify Stripe webhook signatures
-- **Error Messages**: Never expose sensitive system details
+- **Client-Side**: No sensitive data storage
+- **Input Validation**: Basic checks for user inputs
+- **No Auth**: Public access (Stateless)
 
 ### Template-Guided Quality
 
