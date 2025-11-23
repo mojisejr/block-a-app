@@ -45,53 +45,52 @@ export function StepResult({ plan, onReset }: StepResultProps) {
 
       {/* Narrative Strategy */}
       <div className="space-y-4">
-        <h3 className="text-xl font-bold tracking-tight">Your Race Strategy</h3>
+        <h3 className="text-xl font-bold tracking-tight">
+          แผนพิชิต {plan.totalDistance}km ของคุณ
+        </h3>
         
         {/* Phase 1: Warm Up */}
-        <div className="relative border-l-4 border-green-500 pl-4 py-1">
-          <div className="flex items-center gap-2 mb-1">
+        <div className="relative border-l-4 border-green-500 pl-4 py-2">
+          <div className="flex items-center gap-2 mb-2">
             <Badge variant="outline" className="text-green-600 border-green-200 bg-green-50">
-              Phase 1: Warm Up
+              {phases.warmup.name}
             </Badge>
             <span className="text-xs text-muted-foreground font-mono">
               {phases.warmup.range}
             </span>
           </div>
-          <p className="text-sm text-muted-foreground mb-2">
-            Start slow! Hold back your energy. Your target pace is{" "}
-            <span className="font-bold text-foreground">{phases.warmup.pace}</span>.
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            {phases.warmup.description}
           </p>
         </div>
 
         {/* Phase 2: Cruise */}
-        <div className="relative border-l-4 border-blue-500 pl-4 py-1">
-          <div className="flex items-center gap-2 mb-1">
+        <div className="relative border-l-4 border-blue-500 pl-4 py-2">
+          <div className="flex items-center gap-2 mb-2">
             <Badge variant="outline" className="text-blue-600 border-blue-200 bg-blue-50">
-              Phase 2: Cruise
+              {phases.cruise.name}
             </Badge>
             <span className="text-xs text-muted-foreground font-mono">
               {phases.cruise.range}
             </span>
           </div>
-          <p className="text-sm text-muted-foreground mb-2">
-            Lock in your race pace. Maintain steady rhythm at{" "}
-            <span className="font-bold text-foreground">{phases.cruise.pace}</span>.
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            {phases.cruise.description}
           </p>
         </div>
 
         {/* Phase 3: Kick */}
-        <div className="relative border-l-4 border-red-500 pl-4 py-1">
-          <div className="flex items-center gap-2 mb-1">
+        <div className="relative border-l-4 border-red-500 pl-4 py-2">
+          <div className="flex items-center gap-2 mb-2">
             <Badge variant="outline" className="text-red-600 border-red-200 bg-red-50">
-              Phase 3: Kick
+              {phases.kick.name}
             </Badge>
             <span className="text-xs text-muted-foreground font-mono">
               {phases.kick.range}
             </span>
           </div>
-          <p className="text-sm text-muted-foreground mb-2">
-            Give it everything you have left! Push to{" "}
-            <span className="font-bold text-foreground">{phases.kick.pace}</span>.
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            {phases.kick.description}
           </p>
         </div>
       </div>
@@ -107,12 +106,26 @@ export function StepResult({ plan, onReset }: StepResultProps) {
 
       {/* Splits Table */}
       <div className="space-y-4">
-        <h3 className="text-xl font-bold tracking-tight">Splits Breakdown</h3>
+        <div className="flex items-center justify-between">
+          <h3 className="text-xl font-bold tracking-tight">Splits Breakdown</h3>
+          <Button variant="outline" size="sm" onClick={() => {
+            const text = `แผนพิชิต ${plan.totalDistance}km ของคุณ\n\n` +
+              `${phases.warmup.name}\n${phases.warmup.description}\n\n` +
+              `${phases.cruise.name}\n${phases.cruise.description}\n\n` +
+              `${phases.kick.name}\n${phases.kick.description}\n\n` +
+              `Estimated Finish: ${estimatedTime}`;
+            navigator.clipboard.writeText(text);
+            alert("Plan copied to clipboard!");
+          }}>
+            Copy Plan
+          </Button>
+        </div>
         <div className="rounded-md border">
           <Table>
             <TableHeader>
               <TableRow>
                 <TableHead className="w-[80px]">Km</TableHead>
+                <TableHead>Phase</TableHead>
                 <TableHead>Pace</TableHead>
                 <TableHead className="text-right">Time</TableHead>
               </TableRow>
@@ -121,6 +134,7 @@ export function StepResult({ plan, onReset }: StepResultProps) {
               {splits.map((split) => (
                 <TableRow key={split.km}>
                   <TableCell className="font-medium">{split.km}</TableCell>
+                  <TableCell className="text-muted-foreground text-xs">{split.phase}</TableCell>
                   <TableCell className="font-mono">{split.pace}</TableCell>
                   <TableCell className="text-right font-mono text-muted-foreground">
                     {split.cumulativeTime}

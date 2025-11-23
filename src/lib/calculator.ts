@@ -21,7 +21,7 @@ export interface RacePlan {
     cruise: PhaseData;
     kick: PhaseData;
   };
-  splits: { km: number; pace: string; cumulativeTime: string }[];
+  splits: { km: number; pace: string; cumulativeTime: string; phase: string }[];
 }
 
 // Helper: Parse "MM:SS" or "HH:MM:SS" to seconds
@@ -91,43 +91,47 @@ export function calculateRacePlan(
   // Create Phase Data
   const phases = {
     warmup: {
-      name: "Warm Up",
+      name: "ช่วงที่ 1: เริ่มให้ช้า",
       range: `0 - ${warmupDist} km`,
       distance: warmupDist,
       pace: formatSecondsToPace(warmupPaceSeconds),
       paceSeconds: warmupPaceSeconds,
-      description: "Start slow to warm up.",
+      description: `เริ่มต้น ${warmupDist} กิโลเมตรแรก อย่าเพิ่งรีบครับ! ให้คุณวิ่งด้วยความเร็ว Pace ${formatSecondsToPace(warmupPaceSeconds)} เท่านั้น ช่วงนี้สำคัญมากที่ต้อง 'ดึง' ตัวเองให้ช้ากว่าความรู้สึก เพื่อวอร์มเครื่องและเก็บพลังงานไว้ใช้ตอนท้าย จำไว้ว่าถ้าคุณรู้สึกว่าวิ่งช้าไป แปลว่าคุณมาถูกทางแล้วครับ`,
     },
     cruise: {
-      name: "Cruise",
+      name: "ช่วงที่ 2: รักษาเพซแข่ง",
       range: `${warmupDist} - ${warmupDist + cruiseDist} km`,
       distance: cruiseDist,
       pace: formatSecondsToPace(cruisePaceSeconds),
       paceSeconds: cruisePaceSeconds,
-      description: "Maintain steady pace.",
+      description: `เมื่อเข้าสู่กิโลเมตรที่ ${warmupDist} ให้ขยับความเร็วขึ้นมาล็อกไว้ที่ Pace ${formatSecondsToPace(cruisePaceSeconds)} นี่คือ Race Pace จริงของคุณ รักษารอบขาและการหายใจให้นิ่งที่สุด เหมือนหุ่นยนต์ ช่วงนี้ยาวนานที่สุด ให้โฟกัสที่ฟอร์มการวิ่งครับ`,
     },
     kick: {
-      name: "Kick",
+      name: "ช่วงที่ 3: ใส่ยับถ้าคุณยังเหลือ",
       range: `${warmupDist + cruiseDist} - ${distance} km`,
       distance: kickDist,
       pace: formatSecondsToPace(kickPaceSeconds),
       paceSeconds: kickPaceSeconds,
-      description: "Finish strong!",
+      description: `ช่วง ${kickDist} กิโลเมตรสุดท้าย ถ้าแรงยังเหลือ นี่คือเวลาของคุณ! ให้ค่อยๆ เร่งความเร็วขึ้นไปที่ Pace ${formatSecondsToPace(kickPaceSeconds)} เทคนิคคือ 'มองหาคนข้างหน้า' ล็อกเป้าหมาย แล้วค่อยๆ วิ่งดูดเข้าไปหา แซงแล้วมองหาคนถัดไป ใช้แรงก๊อกสุดท้ายใส่ให้หมดจนเข้าเส้นชัย!`,
     },
   };
 
   // Step 3: Generate Splits and Total Time
-  const splits: { km: number; pace: string; cumulativeTime: string }[] = [];
+  const splits: { km: number; pace: string; cumulativeTime: string; phase: string }[] = [];
   let currentSeconds = 0;
 
   for (let i = 1; i <= distance; i++) {
     let paceSeconds = 0;
+    let phaseName = "";
     if (i <= warmupDist) {
       paceSeconds = warmupPaceSeconds;
+      phaseName = "Warm Up";
     } else if (i <= warmupDist + cruiseDist) {
       paceSeconds = cruisePaceSeconds;
+      phaseName = "Cruise";
     } else {
       paceSeconds = kickPaceSeconds;
+      phaseName = "Kick";
     }
 
     currentSeconds += paceSeconds;
@@ -135,11 +139,9 @@ export function calculateRacePlan(
       km: i,
       pace: formatSecondsToPace(paceSeconds),
       cumulativeTime: formatSecondsToTime(currentSeconds),
+      phase: phaseName,
     });
   }
-
-  // Handle non-integer distances (e.g. 21.1 or 42.195 if we supported them, but for now fixed integers)
-  // If distance is 21, loop goes to 21.
 
   return {
     totalDistance: distance,
