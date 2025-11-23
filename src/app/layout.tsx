@@ -6,8 +6,16 @@ import { ThemeProvider } from "@/components/theme-provider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Smart Race Pacer",
-  description: "Calculate your perfect negative split race plan.",
+  title: "Block A Race Estimator",
+  description: "Calculate your perfect negative split race plan. Powered by Block A Running Club.",
+  metadataBase: new URL("https://block-a-app.vercel.app"),
+  openGraph: {
+    title: "Block A Race Estimator",
+    description: "Calculate your perfect negative split race plan. Powered by Block A Running Club.",
+    siteName: "Block A Race Estimator",
+    locale: "th_TH",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
