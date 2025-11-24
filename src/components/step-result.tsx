@@ -15,6 +15,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { RacePlan } from "@/lib/calculator";
 import { cn } from "@/lib/utils";
+import { CalculationInfoDrawer } from "./calculation-info-drawer";
 
 interface StepResultProps {
   plan: RacePlan;
@@ -40,6 +41,7 @@ export function StepResult({ plan, onReset }: StepResultProps) {
           <div className="mt-2 text-sm text-muted-foreground">
             Base Pace: <span className="font-mono font-medium">{basePace}</span> /km
           </div>
+          <CalculationInfoDrawer />
         </CardContent>
       </Card>
 
