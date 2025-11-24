@@ -13,6 +13,8 @@ import {
 } from "@/components/ui/table";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 import { RacePlan } from "@/lib/calculator";
 import { cn } from "@/lib/utils";
 import { CalculationInfoDrawer } from "./calculation-info-drawer";
@@ -20,9 +22,11 @@ import { CalculationInfoDrawer } from "./calculation-info-drawer";
 interface StepResultProps {
   plan: RacePlan;
   onReset: () => void;
+  isBonkMode: boolean;
+  onBonkModeChange: (checked: boolean) => void;
 }
 
-export function StepResult({ plan, onReset }: StepResultProps) {
+export function StepResult({ plan, onReset, isBonkMode, onBonkModeChange }: StepResultProps) {
   const { phases, splits, estimatedTime, basePace } = plan;
 
   return (
@@ -45,6 +49,23 @@ export function StepResult({ plan, onReset }: StepResultProps) {
         </CardContent>
       </Card>
 
+      {/* Bonk Mode Toggle */}
+      <div className="flex items-center space-x-4 p-4 bg-muted/50 rounded-lg border border-border/50">
+        <Switch 
+          id="bonk-mode" 
+          checked={isBonkMode}
+          onCheckedChange={onBonkModeChange} 
+        />
+        <div className="flex flex-col gap-1">
+          <Label htmlFor="bonk-mode" className="font-bold text-foreground cursor-pointer">
+            โหมดกันยางแตก (Survival Mode)
+          </Label>
+          <span className="text-xs text-muted-foreground">
+            เปิดเมื่อรู้สึกไม่ฟิต หรืออยากวิ่งจบแบบไม่เจ็บ
+          </span>
+        </div>
+      </div>
+
       {/* Narrative Strategy */}
       <div className="space-y-4">
         <h3 className="text-xl font-bold tracking-tight">
@@ -54,7 +75,7 @@ export function StepResult({ plan, onReset }: StepResultProps) {
         {/* Phase 1: Warm Up */}
         <div className="relative border-l-4 border-green-500 pl-4 py-2">
           <div className="flex items-center gap-2 mb-2">
-            <Badge variant="outline" className="text-green-600 border-green-200 bg-green-50">
+            <Badge variant="outline" className="text-green-600 border-green-200 bg-green-50 dark:bg-green-900/20 dark:border-green-800 dark:text-green-400">
               {phases.warmup.name}
             </Badge>
             <span className="text-xs text-muted-foreground font-mono">
@@ -69,7 +90,7 @@ export function StepResult({ plan, onReset }: StepResultProps) {
         {/* Phase 2: Cruise */}
         <div className="relative border-l-4 border-blue-500 pl-4 py-2">
           <div className="flex items-center gap-2 mb-2">
-            <Badge variant="outline" className="text-blue-600 border-blue-200 bg-blue-50">
+            <Badge variant="outline" className="text-blue-600 border-blue-200 bg-blue-50 dark:bg-blue-900/20 dark:border-blue-800 dark:text-blue-400">
               {phases.cruise.name}
             </Badge>
             <span className="text-xs text-muted-foreground font-mono">
@@ -84,7 +105,7 @@ export function StepResult({ plan, onReset }: StepResultProps) {
         {/* Phase 3: Kick */}
         <div className="relative border-l-4 border-red-500 pl-4 py-2">
           <div className="flex items-center gap-2 mb-2">
-            <Badge variant="outline" className="text-red-600 border-red-200 bg-red-50">
+            <Badge variant="outline" className="text-red-600 border-red-200 bg-red-50 dark:bg-red-900/20 dark:border-red-800 dark:text-red-400">
               {phases.kick.name}
             </Badge>
             <span className="text-xs text-muted-foreground font-mono">

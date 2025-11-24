@@ -16,6 +16,7 @@ export default function Home() {
   const [step, setStep] = useState<Step>("distance");
   const [distance, setDistance] = useState<RaceDistance | null>(null);
   const [plan, setPlan] = useState<RacePlan | null>(null);
+  const [isBonkMode, setIsBonkMode] = useState(false);
 
   const handleDistanceSelect = (dist: RaceDistance) => {
     setDistance(dist);
@@ -24,15 +25,24 @@ export default function Home() {
 
   const handleCalculate = (targetValue: string, mode: TargetMode) => {
     if (!distance) return;
-    const result = calculateRacePlan(distance, targetValue, mode);
+    const result = calculateRacePlan(distance, targetValue, mode, isBonkMode);
     setPlan(result);
     setStep("result");
+  };
+
+  const handleBonkModeChange = (checked: boolean) => {
+    setIsBonkMode(checked);
+    if (plan && distance) {
+      const newPlan = calculateRacePlan(distance, plan.targetValue, plan.targetMode, checked);
+      setPlan(newPlan);
+    }
   };
 
   const handleReset = () => {
     setStep("distance");
     setDistance(null);
     setPlan(null);
+    setIsBonkMode(false);
   };
 
   return (
@@ -66,7 +76,12 @@ export default function Home() {
           )}
 
           {step === "result" && plan && (
-            <StepResult plan={plan} onReset={handleReset} />
+            <StepResult 
+              plan={plan} 
+              onReset={handleReset} 
+              isBonkMode={isBonkMode}
+              onBonkModeChange={handleBonkModeChange}
+            />
           )}
         </main>
 
