@@ -47,9 +47,9 @@ export default function Home() {
 
   return (
     <>
-      {showSplash && <SplashScreen onFinish={() => setShowSplash(false)} />}
+      {/* {showSplash && <SplashScreen onFinish={() => setShowSplash(false)} />} */}
 
-      <div className="min-h-screen bg-background font-sans text-foreground flex flex-col">
+      <div className="min-h-screen bg-background font-sans text-foreground flex flex-col pb-20">
         {/* Header */}
         <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
           <div className="container flex h-16 items-center justify-between px-4 max-w-md mx-auto">
