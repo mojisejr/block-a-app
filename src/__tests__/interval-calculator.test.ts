@@ -1,5 +1,5 @@
-import { calculateIntervalPlan } from "./interval-calculator";
-import { IntervalInput } from "../types/interval";
+import { calculateIntervalPlan } from "../lib/interval-calculator";
+import { IntervalInput } from "@/types/interval";
 
 function runTest(name: string, actual: any, expected: any) {
   const actualStr = JSON.stringify(actual);
