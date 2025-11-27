@@ -34,10 +34,6 @@ export function calculateTempoPlan(input: IntervalInput): TempoPlan {
   if (input.weeklyMileage === 'mid') durationMinutes = 35;
   if (input.weeklyMileage === 'high') durationMinutes = 50;
   if (input.weeklyMileage === 'custom' && input.customMileage) {
-    // Logic for custom mileage not explicitly defined in FRD for duration, 
-    // but we can infer based on the tiers. 
-    // Let's stick to the tiers for now or map custom mileage to tiers.
-    // FRD says: <30 -> 20min, 30-60 -> 35min, >60 -> 50min
     if (input.customMileage < 30) durationMinutes = 20;
     else if (input.customMileage <= 60) durationMinutes = 35;
     else durationMinutes = 50;
@@ -46,7 +42,7 @@ export function calculateTempoPlan(input: IntervalInput): TempoPlan {
   // Step 4: Final Assembly
   const totalRunDistanceKm = (tempoPaceSecondsPerKm > 0) 
     ? (durationMinutes * 60) / tempoPaceSecondsPerKm 
-    : 0; // Avoid division by zero if something is wrong
+    : 0;
 
   const paceString = formatSecondsToPace(tempoPaceSecondsPerKm);
 

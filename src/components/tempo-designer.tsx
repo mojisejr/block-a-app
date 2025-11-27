@@ -9,7 +9,8 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { calculateTempoPlan } from "@/lib/tempo-calculator";
 import { IntervalInput, RaceDistance, WeeklyMileage } from "@/types/interval";
 import { TempoPlan } from "@/types/tempo";
-import { Timer, Activity, Footprints, Flame, Zap } from "lucide-react";
+import { Timer, Footprints, Flame, Zap } from "lucide-react";
+import { TempoInfoDrawer } from "./tempo-info-drawer";
 
 export function TempoDesigner() {
   const [input, setInput] = useState<IntervalInput>({
@@ -35,6 +36,7 @@ export function TempoDesigner() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold tracking-tight">Tempo Designer</h1>
+        <TempoInfoDrawer />
       </div>
 
       <Card className="border-2 animate-in fade-in slide-in-from-bottom-4 duration-500">
