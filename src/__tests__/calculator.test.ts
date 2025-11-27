@@ -1,4 +1,4 @@
-import { calculateRacePlan, formatSecondsToPace, parseTimeStringToSeconds } from "./calculator";
+import { calculateRacePlan, formatSecondsToPace, parseTimeStringToSeconds } from "../lib/calculator";
 
 function runTest(name: string, actual: any, expected: any) {
   const actualStr = JSON.stringify(actual);
