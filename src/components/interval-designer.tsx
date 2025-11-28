@@ -11,6 +11,7 @@ import { IntervalInput, IntervalPlan, RaceDistance, WeeklyMileage } from "@/type
 import { ArrowLeft, Timer, Activity, Footprints, Flame } from "lucide-react";
 import Link from "next/link";
 import { IntervalInfoDrawer } from "./interval-info-drawer";
+import { SocialShareButton } from "./social-share-button";
 
 export function IntervalDesigner() {
   const [input, setInput] = useState<IntervalInput>({
@@ -192,6 +193,21 @@ export function IntervalDesigner() {
                   {plan.suggestion}
                 </AlertDescription>
               </Alert>
+              <div className="flex justify-center pt-2">
+                <SocialShareButton 
+                  mainStat={plan.timePerRep}
+                  subStat={`at Pace ${plan.pacePerKm}`}
+                  details={[
+                    { label: "Reps", value: `${plan.reps} x ${input.selectedIntervalDist}m` },
+                    { label: "Rest", value: `${plan.restTime} mins` },
+                    { label: "Total", value: `${plan.totalDistanceKm} km` },
+                  ]}
+                  buttonLabel="Share Plan"
+                  variant="blocka"
+                  title="Interval Plan"
+                  suggestion={plan.suggestion}
+                />
+              </div>
             </CardContent>
           </Card>
         </div>

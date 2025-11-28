@@ -11,6 +11,7 @@ import { IntervalInput, RaceDistance, WeeklyMileage } from "@/types/interval";
 import { TempoPlan } from "@/types/tempo";
 import { Timer, Footprints, Flame, Zap } from "lucide-react";
 import { TempoInfoDrawer } from "./tempo-info-drawer";
+import { SocialShareButton } from "./social-share-button";
 
 export function TempoDesigner() {
   const [input, setInput] = useState<IntervalInput>({
@@ -190,6 +191,24 @@ export function TempoDesigner() {
                   {plan.suggestion}
                 </AlertDescription>
               </Alert>
+              <div className="flex justify-center pt-2">
+                <SocialShareButton 
+                  mainStat={plan.targetPace}
+                  subStat="Tempo Pace"
+                  details={[
+                    { label: "Duration", value: `${plan.durationMinutes} mins` },
+                    { label: "Distance", value: `~${plan.totalDistanceKm} km` },
+                    { label: "Main Set", value: plan.mainSetText },
+                  ]}
+                  buttonLabel="Share Plan"
+                  variant="blocka"
+                  title="Tempo Plan"
+                  warmUpText={plan.warmUpText}
+                  coolDownText={plan.coolDownText}
+                  suggestion={plan.suggestion}
+                  intensityDescription={plan.intensityDescription}
+                />
+              </div>
             </CardContent>
           </Card>
         </div>

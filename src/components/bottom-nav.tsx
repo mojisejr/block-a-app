@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Timer, Activity, Zap } from "lucide-react";
+import { Timer, Activity, Zap, Calendar } from "lucide-react";
 
 export function BottomNav() {
   const pathname = usePathname();
@@ -21,7 +21,12 @@ export function BottomNav() {
     {
       name: "Tempo",
       href: "/tempo",
-      icon: Zap, // Using Zap icon for Tempo as used in the designer
+      icon: Zap,
+    },
+    {
+      name: "Calendar",
+      href: "/calendar",
+      icon: Calendar,
     },
   ];
 
