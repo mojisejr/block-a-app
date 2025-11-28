@@ -18,6 +18,7 @@ import { Label } from "@/components/ui/label";
 import { RacePlan } from "@/lib/calculator";
 import { cn } from "@/lib/utils";
 import { CalculationInfoDrawer } from "./calculation-info-drawer";
+import { SocialShareButton } from "./social-share-button";
 
 interface StepResultProps {
   plan: RacePlan;
@@ -131,17 +132,36 @@ export function StepResult({ plan, onReset, isBonkMode, onBonkModeChange }: Step
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <h3 className="text-xl font-bold tracking-tight">Splits Breakdown</h3>
-          <Button variant="outline" size="sm" onClick={() => {
-            const text = `แผนพิชิต ${plan.totalDistance}km ของคุณ\n\n` +
-              `${phases.warmup.name}\n${phases.warmup.description}\n\n` +
-              `${phases.cruise.name}\n${phases.cruise.description}\n\n` +
-              `${phases.kick.name}\n${phases.kick.description}\n\n` +
-              `Estimated Finish: ${estimatedTime}`;
-            navigator.clipboard.writeText(text);
-            alert("Plan copied to clipboard!");
-          }}>
-            Copy Plan
-          </Button>
+          <div className="flex gap-2">
+            <SocialShareButton 
+              mainStat={estimatedTime}
+              subStat={`Target for ${plan.totalDistance}km`}
+              details={[
+                { label: "Base Pace", value: `${basePace}/km` },
+                { label: "Warm Up", value: phases.warmup.range },
+                { label: "Cruise", value: phases.cruise.range },
+                { label: "Kick", value: phases.kick.range },
+              ]}
+              buttonLabel="Share"
+              className="h-9"
+              variant="blocka"
+              title="Race Plan"
+              warmUpText={`${phases.warmup.name}: ${phases.warmup.description}`}
+              coolDownText={`${phases.kick.name}: ${phases.kick.description}`}
+              suggestion="Follow the phases strictly for best results."
+            />
+            <Button variant="outline" size="sm" onClick={() => {
+              const text = `แผนพิชิต ${plan.totalDistance}km ของคุณ\n\n` +
+                `${phases.warmup.name}\n${phases.warmup.description}\n\n` +
+                `${phases.cruise.name}\n${phases.cruise.description}\n\n` +
+                `${phases.kick.name}\n${phases.kick.description}\n\n` +
+                `Estimated Finish: ${estimatedTime}`;
+              navigator.clipboard.writeText(text);
+              alert("Plan copied to clipboard!");
+            }}>
+              Copy Plan
+            </Button>
+          </div>
         </div>
         <div className="rounded-md border">
           <Table>
